@@ -1,20 +1,41 @@
-const speed = document.querySelector('.speed');
-const speedBar = document.querySelector('.speed-bar');
-const video = document.querySelector('.flex');
+const video = document.querySelector('.player__video');
+const toggle = document.querySelector('.toggle');
+const rewind = document.querySelector('.rewind');
+const forward = document.querySelector('.forward');
+const volume = document.querySelector('.volume');
+const playbackSpeed = document.querySelector('.playbackSpeed');
 
-function handleUpdate() {
-  const y = this.offsetY;
-  const percent = y / this.offsetHeight;
+// Play / pause toggle
+toggle.addEventListener('click', () => {
+  if (video.paused) {
+    video.play();
+    toggle.textContent = '❚ ❚';
+  } else {
+    video.pause();
+    toggle.textContent = '►';
+  }
+});
 
-  const min = 0.5;
-  const max = 4;
+// Rewind 10s
+rewind.addEventListener('click', () => {
+  video.currentTime -= 10;
+});
 
-  const playbackRate = percent * (max - min) + min;
+// Forward 25s
+forward.addEventListener('click', () => {
+  video.currentTime += 25;
+});
 
-  speedBar.style.height = `${percent * 100}%`;
-  speedBar.textContent = playbackRate.toFixed(2) + '×';
-  video.playbackRate = playbackRate;
-}
+// Volume control
+volume.addEventListener('input', () => {
+  video.volume = volume.value;
+});
 
-// Attach the "mousemove" event to the speed control div
-speed.addEventListener('mousemove', handleUpdate);
+// Playback speed control
+playbackSpeed.addEventListener('input', () => {
+  video.playbackRate = playbackSpeed.value;
+});
+
+// Update toggle button if video is paused/played via other methods
+video.addEventListener('play', () => toggle.textContent = '❚ ❚');
+video.addEventListener('pause', () => toggle.textContent = '►');
